@@ -25,7 +25,8 @@ const solutions = ref({
     whiteRoofs: [0, 10, 20],
     concretePavement: [0, 10, 10],
     maple: [10, 20, 30],
-    pine: [0, 10, 10],
+    heatGoblins: [-10, -15, -30],
+    iceDragon: [15, 20, 50],
     vinylSiding: [0, 20, 20],
     woodSiding: [0, 10, 10],
     });
@@ -44,9 +45,10 @@ const solutionApplicationDict = ref({
     whiteRoofs: false,
     concretePavement: false,
     maple: false,
-    pine: false,
     vinylSiding: false,
-    woodSiding: false
+    woodSiding: false,
+    heatGoblins: false,
+    iceDragon: false
 });
 const initialSensorData: SensorDatum[] = [
         {
@@ -189,6 +191,8 @@ const initialSensorData: SensorDatum[] = [
         },
       ];
 
+const displaySensors = ref(false)
+
 const isFuzzed = ref(false);
 
     function updateSolutionDict(key) {
@@ -248,6 +252,14 @@ function getAvg() {
 }
 
 function showSensors() {
+  displaySensors.value = true;
+  drawSensors();
+}
+function hideSensors() {
+  displaySensors.value = false;
+  removeSensors();
+}
+function drawSensors() {
     for( const i of initialSensorData) {
         const svg = d3.select('svg');
         svg
@@ -259,7 +271,7 @@ function showSensors() {
     .style('fill', 'red');
     }
 }
-function hideSensors() {
+function removeSensors() {
     d3.selectAll("circle").remove();
 }
 function addColor() {
@@ -335,9 +347,12 @@ function draw() {
 
             .attr("width", gridSize.value)
             .attr("height", gridSize.value)
-            .style("opacity", 0.3)
+            .style("opacity", 0.65)
             .style("fill", colorScale(interpolated));
         }
+    }
+    if(displaySensors.value) {
+      drawSensors()
     }
 }
 

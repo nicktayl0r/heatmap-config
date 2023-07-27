@@ -1,0 +1,25 @@
+# Todos for Demo
+
+## Inputs
+- [~] Fuzz Button
+- [~] Draw Button
+
+- [~] P Value
+- [~] Grid Size
+- [~] Domain [ Floor & Ceiling]
+- [~] Stock Value Config
+- [~] Color Range & Weight
+- [~] Solution Values
+- [~] Solution Toggles
+- [~] Sensor Location and Values
+## Methods, Rendering, Styling
+- [X] Draw Map
+- [X] add color & delete color
+- [X] Sensor Location visibility on hover [show & hide]
+- [X] Average Temp
+- [X] image integration
+- [1] integrate old logic
+- [2] Style Config sensibly
+- [3] Draw Map with Fuzz
+## Finale
+- [ ] host and deployconcretePavement

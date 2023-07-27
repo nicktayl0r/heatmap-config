@@ -18,9 +18,9 @@ interface HydratedSensorDatum extends SensorDatum {
 type ColorData = [string, number]
 type PValue = 4 | 8 | 16 | 2 | 32;
 const chart  = ref(null);
-const pValue = ref(4);
-const gridSize = ref(20);
-const regionalSeed = ref([200, 250, 290])
+const pValue = ref(8);
+const gridSize = ref(10);
+const regionalSeed = ref([200, 250, 320])
 const solutions = ref({
     whiteRoofs: [0, 10, 20],
     concretePavement: [0, 10, 10],
@@ -38,7 +38,7 @@ const colors = ref([
     ['#3d0c0a', 3],
     ['#000000', 1]
     ])
-const domain = ref([200, 300]);
+const domain = ref([200, 320]);
 
 
 const solutionApplicationDict = ref({

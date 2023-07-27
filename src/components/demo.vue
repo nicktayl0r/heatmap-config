@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts"> //@ts-ignore
 import * as d3 from "d3";
 import { ref } from 'vue'
 interface SolutionApplicationDict {
@@ -18,7 +18,7 @@ interface HydratedSensorDatum extends SensorDatum {
 type ColorData = [string, number]
 type PValue = 4 | 8 | 16 | 2 | 32;
 const chart  = ref(null);
-const pValue: Ref<PValue> = ref(4);
+const pValue = ref(4);
 const gridSize = ref(20);
 const regionalSeed = ref([200, 250, 290])
 const solutions = ref({
@@ -195,34 +195,34 @@ const displaySensors = ref(false)
 
 const isFuzzed = ref(false);
 
-    function updateSolutionDict(key) {
+    function updateSolutionDict(key: string) {
         const newDict = {
             ...solutionApplicationDict.value,
       };
-
+      //@ts-ignore
       newDict[key] = !solutionApplicationDict.value[key];
 
       solutionApplicationDict.value = newDict;
     console.log(key, solutionApplicationDict.value)
     }
     function applySolutions() {
-      for (let k of Object.keys(solutionApplicationDict.value)) {
+      for (let k of Object.keys(solutionApplicationDict.value)) { //@ts-ignore
         if (solutionApplicationDict.value[k]) {
           applySolution(k);
         }
       }
     }
-    function applySolution(key) {
+    function applySolution(key: string) { //@ts-ignore
       let vars = solutionApplicationDict.value[key] ? solutions.value[key] : [0, 0, 0];
       console.info("hello", key, vars)
       for (const d of initialSensorData) {
-        if (d.type === "suburb") {
+        if (d.type === "suburb" && d.value) {
           d.value = d.value - vars[1];
         }
-        if (d.type === "urban") {
+        if (d.type === "urban" && d.value) {
           d.value = d.value - vars[2];
         }
-        if (d.type === "rural") {
+        if (d.type === "rural" && d.value) {
           d.value = d.value - vars[0];
         }
       }
@@ -248,7 +248,7 @@ const isFuzzed = ref(false);
     }
 
 function getAvg() {
-    return initialSensorData.reduce((a, b) => a + b.value,0) / initialSensorData.length || 0
+      return initialSensorData.reduce((a, b) => a + (b.value || 0),0) / initialSensorData.length || 0
 }
 
 function showSensors() {
@@ -294,7 +294,7 @@ function draw() {
    const height = 324;
    const p = pValue.value
 
-   const colorRange = colors.value.reduce((acc, curr) => {
+   const colorRange = colors.value.reduce((acc, curr) => { //@ts-ignore
     for(let i = 0; i < curr[1]; i++) {
         acc.push(curr[0]);
     }
@@ -322,7 +322,7 @@ function draw() {
     .scaleSequential(d3.interpolateRgbBasis(colorRange))
     .domain(domain.value);
 
-    const interpolateValue = (x, y) => {
+    const interpolateValue = (x: number, y: number) => {
     let totalWeight = 0;
     let interpolatedValue = 0;
 
@@ -330,7 +330,7 @@ function draw() {
         const distance =
         Math.sqrt((x - d.x) ** p + (y - d.y) ** p) + 10 ** -15;
         const weight = 1 / distance;
-        totalWeight += weight;
+        totalWeight += weight; //@ts-ignore
         interpolatedValue += weight * d.value;
     });
 
@@ -398,7 +398,7 @@ function draw() {
         </div>
         <div class="colors">
         <h2>Colors & Weights</h2>
-                    <div v-for="(c, i) in colors" :key="c">
+                    <div v-for="(c, i) in colors" :key="i">
             <input type="color" v-model="c[0]">
             <input type="number" max="10" min="1" v-model='c[1]'>
             <button @click="deleteColor(i)">x</button>

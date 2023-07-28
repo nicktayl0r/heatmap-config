@@ -18,17 +18,17 @@ interface HydratedSensorDatum extends SensorDatum {
 type ColorData = [string, number]
 type PValue = 4 | 8 | 16 | 2 | 32;
 const chart  = ref(null);
-const pValue = ref(8);
+const pValue = ref(4);
 const gridSize = ref(10);
-const regionalSeed = ref([200, 250, 320])
+const regionalSeed = ref([230, 300, 420])
 const solutions = ref({
-    whiteRoofs: [0, 10, 20],
-    concretePavement: [0, 10, 10],
-    maple: [10, 20, 30],
-    heatGoblins: [-10, -15, -30],
-    iceDragon: [15, 20, 50],
-    vinylSiding: [0, 20, 20],
-    woodSiding: [0, 10, 10],
+    whiteRoofs: [0, 8, 18],
+    concretePavement: [0, 8, 8],
+    maple: [20, 10, 15],
+    // heatGoblins: [-10, -15, -30],
+    // iceDragon: [15, 20, 50],
+    vinylSiding: [0, 18, 18],
+    woodSiding: [0, 8, 8],
     });
 
 const colors = ref([
@@ -38,7 +38,7 @@ const colors = ref([
     ['#3d0c0a', 3],
     ['#000000', 1]
     ])
-const domain = ref([200, 320]);
+const domain = ref([240, 420]);
 
 
 const solutionApplicationDict = ref({
@@ -47,8 +47,8 @@ const solutionApplicationDict = ref({
     maple: false,
     vinylSiding: false,
     woodSiding: false,
-    heatGoblins: false,
-    iceDragon: false
+    // heatGoblins: false,
+    // iceDragon: false
 });
 const initialSensorData: SensorDatum[] = [
         {
@@ -361,41 +361,8 @@ function draw() {
 <template>
   <div>
         <h1>Configuration</h1>
+        <p>This one's for the heat goblins who couldn't be with us today. Gone but not forgotten!</p>
     <div class="configBox">
-
-        <div class="sensorData">
-        <h2>Initial Sensor Data</h2>
-          <table>
-            <thead>
-            <tr>
-                <th>X</th>
-                <th>Y</th>
-                <th>Region</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(d, i) in initialSensorData" :key="i">
-
-                <td>
-                    <input type="number" name="" id="" v-model="initialSensorData[i]['x']">
-                </td>
-                <td>
-                    <input type="number" name="" id="" v-model="initialSensorData[i]['y']">
-                </td>
-                <td>
-                    <select name="" id="" v-model="initialSensorData[i]['type']">
-                        <option>urban</option>
-                        <option>suburb</option>
-                        <option>rural</option>
-                    </select>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-
-
-        </div>
         <div class="colors">
         <h2>Colors & Weights</h2>
                     <div v-for="(c, i) in colors" :key="i">
@@ -530,15 +497,15 @@ function draw() {
     display: grid;;
     width: 100%;
     height: 75vh;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
     grid-column-gap: 3vh;
     grid-row-gap: 1vh;
     grid-template-areas:
-    "d e h f"
-    "c e h f"
-    "b g h f"
-    "a g h f";
+    "d e h"
+    "c e h"
+    "b g h"
+    "a g h";
 }
 
 .configBox h3 {

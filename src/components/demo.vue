@@ -34,7 +34,7 @@ const solutions = ref({
 const colors = ref([
     ['#79CB40', 3],
     ['#FFB840', 2],
-    ['#f40000', 3],
+    ['#f40000', 2],
     ['#3d0c0a', 3],
     ])
 const domain = ref([240, 420]);

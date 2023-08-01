@@ -874,23 +874,23 @@ function applySolutions() {
 function applySolution(key: string) { //@ts-ignore
   let vars = solutionApplicationDict.value[key] ? solutions.value[key] : [0, 0, 0, "*"];
   console.info("hello", key, vars)
-  for (const d of initialSensorData) {
-    if (d.zone === "suburb" && d.type === vars[3] && d.value) {
+  for (const d of initialSensorData) {//@ts-ignore
+    if (d.zone === "suburb" && d.type === vars[3] && d.value) { //@ts-ignore
       d.value = d.value - vars[1];
-    }
-    if (d.zone === "urban" && d.type === vars[3] && d.value) {
+    } //@ts-ignore
+    if (d.zone === "urban" && d.type === vars[3] && d.value) { //@ts-ignore
       d.value = d.value - vars[2];
-    }
-    if (d.zone === "rural" && d.type === vars[3] && d.value) {
+    } //@ts-ignore
+    if (d.zone === "rural" && d.type === vars[3] && d.value) { //@ts-ignore
       d.value = d.value - vars[0];
-    }
-    if (d.zone === "suburb" && d.type === "*" && d.value) {
+    } //@ts-ignore
+    if (d.zone === "suburb" && d.type === "*" && d.value) { //@ts-ignore
       d.value = d.value - (vars[1]/2);
-    }
-    if (d.zone === "urban" && d.type === "*" && d.value) {
+    } //@ts-ignore
+    if (d.zone === "urban" && d.type === "*" && d.value) { //@ts-ignore
       d.value = d.value - (vars[2]/2);
-    }
-    if (d.zone === "rural" && d.type === "*" && d.value) {
+    } //@ts-ignore
+    if (d.zone === "rural" && d.type === "*" && d.value) { //@ts-ignore
       d.value = d.value - (vars[0]/2);
     }
   }
@@ -903,19 +903,19 @@ function setupData() {
     const randIncrease = Math.random() > 0.5;
     // const c = randIncrease ? randNumber() : randNumber() * -1;
     const c = 0;
-    if (d.zone === "suburb") {
+    if (d.zone === "suburb") { //@ts-ignore
       d.value = regionalSeed.value[1] + c;
     }
-    if (d.zone === "urban") {
+    if (d.zone === "urban") { //@ts-ignore
       d.value = regionalSeed.value[2] + c;
     }
-    if (d.zone === "rural") {
+    if (d.zone === "rural") { //@ts-ignore
       d.value = regionalSeed.value[0] + c;
     }
   }
 }
 
-function getAvg() {
+function getAvg() { //@ts-ignore
   return initialSensorData.reduce((a, b) => a + (b.value || 0), 0) / initialSensorData.length || 0
 }
 

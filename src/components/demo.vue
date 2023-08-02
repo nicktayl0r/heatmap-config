@@ -19,26 +19,26 @@ interface HydratedSensorDatum extends SensorDatum {
 type ColorData = [string, number]
 type PValue = 4 | 8 | 16 | 2 | 32;
 const chart = ref(null);
-const pValue = ref(4);
-const gridSize = ref(10);
-const regionalSeed = ref([230, 300, 420])
+const pValue = ref(8);
+const gridSize = ref(3);
+const regionalSeed = ref([230, 360, 420])
 const solutions = ref({
-  whiteRoofs: [0, 8, 18, "Roof"],
-  concretePavement: [0, 8, 8, "Road"],
-  maple: [20, 10, 15, "Tree"],
-  vinylSiding: [0, 18, 18, "Siding"],
-  woodSiding: [0, 8, 8, "Siding"],
+  whiteRoofs: [0, 20, 25, "Roof"],
+  concretePavement: [0, 13, 19, "Road"],
+  maple: [20, 17, 22, "Tree"],
+  vinylSiding: [0, 23, 24, "Siding"],
+  woodSiding: [0, 13, 14, "Siding"],
   // heatGoblins: [-10, -15, -30],
   // iceDragon: [15, 20, 50],
 });
 
 const colors = ref([
   ['#79CB40', 3],
-  ['#FFB840', 2],
-  ['#f40000', 2],
-  ['#3d0c0a', 3],
+  ['#FFB840', 1],
+  ['#f40000', 1],
+  ['#3d0c0a', 1],
 ])
-const domain = ref([240, 420]);
+const domain = ref([256, 418]);
 
 
 const solutionApplicationDict = ref({
@@ -340,9 +340,10 @@ const initialSensorData = [
     "type": "Tree"
   },
   {
-    "x": 153,
-    "y": 160,
-    "zone": "suburb",
+    // soccer field
+    "x": 175,
+    "y": 145,
+    "zone": "urban",
     "type": "Tree"
   },
   {
@@ -702,9 +703,37 @@ const initialSensorData = [
     type: "*",
   },
   {
-    //rural 9
-    x: 210,
-    y: 290,
+    //rural N river
+    x: 131,
+    y: 52,
+    zone: "rural",
+    type: "*",
+  },
+  {
+    //rural N River
+    x: 218,
+    y: 47,
+    zone: "rural",
+    type: "*",
+  },
+  {
+    //rural SW
+    x: 8,
+    y: 192,
+    zone: "rural",
+    type: "*",
+  },
+  {
+    //rural SW
+    x: 42,
+    y: 217,
+    zone: "rural",
+    type: "*",
+  },
+  {
+    //rural SW
+    x: 9,
+    y: 142,
     zone: "rural",
     type: "*",
   }

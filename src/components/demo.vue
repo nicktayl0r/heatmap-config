@@ -2,6 +2,7 @@
 //@ts-ignore
 import * as d3 from "d3";
 import { ref } from 'vue'
+import { initialSensorData, voronaiData } from '../data';
 interface SolutionApplicationDict {
   [key: string]: boolean
 }
@@ -28,8 +29,6 @@ const solutions = ref({
   maple: [20, 17, 22, "Tree"],
   vinylSiding: [0, 23, 24, "Siding"],
   woodSiding: [0, 13, 14, "Siding"],
-  // heatGoblins: [-10, -15, -30],
-  // iceDragon: [15, 20, 50],
 });
 
 const colors = ref([
@@ -40,6 +39,81 @@ const colors = ref([
 ])
 const domain = ref([256, 418]);
 
+const dataFlag = ref("")
+
+function applyGratefulDeadConfig() {
+  regionalSeed.value = [275, 380, 420];
+  domain.value = [256, 418];
+  pValue.value = 8;
+  gridSize.value = 3;
+
+  solutions.value = {
+    whiteRoofs: [0, 20, 25, "Roof"],
+    concretePavement: [0, 13, 19, "Road"],
+    maple: [20, 17, 22, "Tree"],
+    vinylSiding: [0, 23, 24, "Siding"],
+    woodSiding: [0, 13, 14, "Siding"],
+  };
+
+  colors.value = [
+    ['#8cf0e1', 4],
+    ['#FDEA00', 3],
+    ['#ff8000', 2],
+    ['#b70000', 1],
+  ]
+  dataFlag.value = "initialSensorData"
+  redrawChart();
+}
+
+function applyGratefulDeadVoronaiConfig() {
+  regionalSeed.value = [275, 380, 420];
+  domain.value = [256, 410];
+  pValue.value = 4;
+  gridSize.value = 6;
+
+  solutions.value = {
+    whiteRoofs: [0, 20, 25, "Roof"],
+    concretePavement: [0, 13, 19, "Road"],
+    maple: [20, 17, 22, "Tree"],
+    vinylSiding: [0, 23, 24, "Siding"],
+    woodSiding: [0, 13, 14, "Siding"],
+  };
+
+  colors.value = [
+    ['#8cf0e1', 3],
+    ['#FDEA00', 2],
+    ['#ff8000', 2],
+    ['#b70000', 2],
+  ]
+  dataFlag.value = "voronai"
+  redrawChart();
+}
+
+function applyJosephConradConfig() {
+  regionalSeed.value = [230, 360, 420];
+  domain.value = [256, 418];
+  pValue.value = 8;
+  gridSize.value = 3
+
+  colors.value = [
+    ['#79CB40', 3],
+    ['#FFB840', 1],
+    ['#f40000', 1],
+    ['#3d0c0a', 1],
+  ]
+
+  solutions.value = {
+    whiteRoofs: [0, 20, 25, "Roof"],
+    concretePavement: [0, 13, 19, "Road"],
+    maple: [20, 17, 22, "Tree"],
+    vinylSiding: [0, 23, 24, "Siding"],
+    woodSiding: [0, 13, 14, "Siding"],
+  };
+  dataFlag.value = "initialSensorData"
+  redrawChart();
+
+}
+
 
 const solutionApplicationDict = ref({
   whiteRoofs: false,
@@ -47,837 +121,8 @@ const solutionApplicationDict = ref({
   maple: false,
   vinylSiding: false,
   woodSiding: false,
-  // heatGoblins: false,
-  // iceDragon: false
+
 });
-const initialSensorData = [
-  {
-    "x": 257,
-    "y": 46,
-    "zone": "rural",
-    "type": "Road"
-  },
-  {
-    "x": 56,
-    "y": 286,
-    "zone": "rural",
-    "type": "Road"
-  },
-  {
-    "x": 199,
-    "y": 276,
-    "zone": "rural",
-    "type": "Road"
-  },
-  {
-    "x": 35,
-    "y": 41,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 74,
-    "y": 48,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 39,
-    "y": 74,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 77,
-    "y": 73,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 55,
-    "y": 36,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 29,
-    "y": 58,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 74,
-    "y": 58,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 20,
-    "y": 60,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 59,
-    "y": 46,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 61,
-    "y": 76,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 79,
-    "y": 32,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 252,
-    "y": 85,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 283,
-    "y": 107,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 242,
-    "y": 67,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 263,
-    "y": 97,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 251,
-    "y": 111,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 257,
-    "y": 75,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 282,
-    "y": 93,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 269,
-    "y": 170,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 240,
-    "y": 210,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 292,
-    "y": 214,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 258,
-    "y": 267,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 205,
-    "y": 210,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 232,
-    "y": 246,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 237,
-    "y": 180,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 288,
-    "y": 231,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 274,
-    "y": 187,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 204,
-    "y": 180,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 241,
-    "y": 226,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 310,
-    "y": 205,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 275,
-    "y": 256,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 103,
-    "y": 232,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 138,
-    "y": 222,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 150,
-    "y": 180,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 172,
-    "y": 192,
-    "zone": "suburb",
-    "type": "Road"
-  },
-  {
-    "x": 98,
-    "y": 266,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 150,
-    "y": 250,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 100,
-    "y": 210,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 120,
-    "y": 193,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 170,
-    "y": 177,
-    "zone": "suburb",
-    "type": "Roof"
-  },
-  {
-    "x": 80,
-    "y": 234,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 111,
-    "y": 215,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 128,
-    "y": 251,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 134,
-    "y": 238,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    "x": 162,
-    "y": 215,
-    "zone": "suburb",
-    "type": "Tree"
-  },
-  {
-    // soccer field
-    "x": 175,
-    "y": 145,
-    "zone": "urban",
-    "type": "Tree"
-  },
-  {
-    "x": 101,
-    "y": 114,
-    "zone": "urban",
-    "type": "Siding"
-  },
-  {
-    "x": 117,
-    "y": 80,
-    "zone": "urban",
-    "type": "Siding"
-  },
-  {
-    "x": 147,
-    "y": 73,
-    "zone": "urban",
-    "type": "Siding"
-  },
-  {
-    "x": 153,
-    "y": 101,
-    "zone": "urban",
-    "type": "Siding"
-  },
-  {
-    "x": 179,
-    "y": 71,
-    "zone": "urban",
-    "type": "Siding"
-  },
-  {
-    "x": 167,
-    "y": 116,
-    "zone": "urban",
-    "type": "Siding"
-  },
-  {
-    "x": 32,
-    "y": 169,
-    "zone": "urban",
-    "type": "Road"
-  },
-  {
-    "x": 63,
-    "y": 195,
-    "zone": "urban",
-    "type": "Road"
-  },
-  {
-    "x": 68,
-    "y": 159,
-    "zone": "urban",
-    "type": "Road"
-  },
-  {
-    "x": 88,
-    "y": 188,
-    "zone": "urban",
-    "type": "Road"
-  },
-  {
-    "x": 121,
-    "y": 158,
-    "zone": "urban",
-    "type": "Road"
-  },
-  {
-    "x": 152,
-    "y": 122,
-    "zone": "urban",
-    "type": "Road"
-  },
-  {
-    "x": 155,
-    "y": 87,
-    "zone": "urban",
-    "type": "Road"
-  },
-  {
-    "x": 206,
-    "y": 93,
-    "zone": "urban",
-    "type": "Road"
-  },
-  {
-    "x": 217,
-    "y": 144,
-    "zone": "urban",
-    "type": "Road"
-  },
-  {
-    "x": 90,
-    "y": 125,
-    "zone": "urban",
-    "type": "Road"
-  },
-  {
-    "x": 73,
-    "y": 172,
-    "zone": "urban",
-    "type": "Roof"
-  },
-  {
-    "x": 68,
-    "y": 123,
-    "zone": "urban",
-    "type": "Roof"
-  },
-  {
-    "x": 106,
-    "y": 102,
-    "zone": "urban",
-    "type": "Roof"
-  },
-  {
-    "x": 132,
-    "y": 74,
-    "zone": "urban",
-    "type": "Roof"
-  },
-  {
-    "x": 162,
-    "y": 57,
-    "zone": "urban",
-    "type": "Roof"
-  },
-  {
-    "x": 191,
-    "y": 63,
-    "zone": "urban",
-    "type": "Roof"
-  },
-  {
-    "x": 178,
-    "y": 94,
-    "zone": "urban",
-    "type": "Roof"
-  },
-  {
-    "x": 180,
-    "y": 121,
-    "zone": "urban",
-    "type": "Roof"
-  },
-  {
-    "x": 227,
-    "y": 110,
-    "zone": "urban",
-    "type": "Roof"
-  },
-  {
-    "x": 204,
-    "y": 139,
-    "zone": "urban",
-    "type": "Roof"
-  },
-  {
-    "x": 47,
-    "y": 198,
-    "zone": "urban",
-    "type": "Tree"
-  },
-  {
-    "x": 91,
-    "y": 175,
-    "zone": "urban",
-    "type": "Tree"
-  },
-  {
-    "x": 66,
-    "y": 141,
-    "zone": "urban",
-    "type": "Tree"
-  },
-  {
-    "x": 142,
-    "y": 125,
-    "zone": "urban",
-    "type": "Tree"
-  },
-  {
-    "x": 121,
-    "y": 103,
-    "zone": "urban",
-    "type": "Tree"
-  },
-  {
-    "x": 147,
-    "y": 85,
-    "zone": "urban",
-    "type": "Tree"
-  },
-  {
-    "x": 161,
-    "y": 68,
-    "zone": "urban",
-    "type": "Tree"
-  },
-  {
-    "x": 201,
-    "y": 102,
-    "zone": "urban",
-    "type": "Tree"
-  },
-  {
-    "x": 220,
-    "y": 123,
-    "zone": "urban",
-    "type": "Tree"
-  },
-  {
-    "x": 38,
-    "y": 43,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 77,
-    "y": 50,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 42,
-    "y": 76,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 80,
-    "y": 75,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 260,
-    "y": 77,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 285,
-    "y": 95,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 272,
-    "y": 172,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 243,
-    "y": 212,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 295,
-    "y": 216,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 261,
-    "y": 269,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 101,
-    "y": 268,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 153,
-    "y": 252,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 103,
-    "y": 212,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 123,
-    "y": 195,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    "x": 173,
-    "y": 179,
-    "zone": "suburb",
-    "type": "Siding"
-  },
-  {
-    //rural 1
-    x: 10,
-    y: 10,
-    zone: "rural",
-    type: "*",
-  },
-  {
-    //rural 2
-    x: 120,
-    y: 10,
-    zone: "rural",
-    type: "*",
-  },
-  {
-    //rural 3
-    x: 200,
-    y: 10,
-    zone: "rural",
-    type: "*",
-  },
-  {
-    //rural 4
-    x: 340,
-    y: 10,
-    zone: "rural",
-    type: "*",
-  },
-  {
-    //rural 5
-    x: 10,
-    y: 125,
-    zone: "rural",
-    type: "*",
-  },
-  {
-    //rural 6
-    x: 330,
-    y: 170,
-    zone: "rural",
-    type: "*",
-  },
-  {
-    //rural 7
-    x: 10,
-    y: 300,
-    zone: "rural",
-    type: "*",
-  },
-  {
-    //rural 8
-    x: 370,
-    y: 220,
-    zone: "rural",
-    type: "*",
-  },
-  {
-    //rural N river
-    x: 131,
-    y: 52,
-    zone: "rural",
-    type: "*",
-  },
-  {
-    //rural N River
-    x: 218,
-    y: 47,
-    zone: "rural",
-    type: "*",
-  },
-  {
-    //rural SW
-    x: 8,
-    y: 192,
-    zone: "rural",
-    type: "*",
-  },
-  {
-    //rural SW
-    x: 42,
-    y: 217,
-    zone: "rural",
-    type: "*",
-  },
-  {
-    //rural SW
-    x: 9,
-    y: 142,
-    zone: "rural",
-    type: "*",
-  }
-]
-// const initialSensorData: SensorDatum[] = [
-//         {
-//           //magnolia manor
-//           x: 80,
-//           y: 50,
-//           type: "suburb",
-//         },
-//         {
-//           //green acres
-//           x: 240,
-//           y: 30,
-//           type: "rural",
-//         },
-//         {
-//           //tulip gardens
-//           x: 300,
-//           y: 40,
-//           type: "rural",
-//         },
-//         {
-//           //totten towers
-//           x: 93,
-//           y: 110,
-//           type: "urban",
-//         },
-//         {
-//           //city center
-//           x: 160,
-//           y: 90,
-//           type: "urban",
-//         },
-//         {
-//           //city center 2
-//           x: 210,
-//           y: 75,
-//           type: "urban",
-//         },
-//         {
-//           //city center 3
-//           x: 200,
-//           y: 100,
-//           type: "urban",
-//         },
-//         {
-//           //putter's
-//           x: 300,
-//           y: 125,
-//           type: "suburb",
-//         },
-//         {
-//           //faraday factory
-//           x: 40,
-//           y: 175,
-//           type: "urban",
-//         },
-//         {
-//           //faraday factory 2
-//           x: 60,
-//           y: 220,
-//           type: "urban",
-//         },
-//         {
-//           //raine's field
-//           x: 130,
-//           y: 155,
-//           type: "urban",
-//         },
-//         {
-//           //lakeview square
-//           x: 210,
-//           y: 165,
-//           type: "suburb",
-//         },
-//         {
-//           //sunny glen
-//           x: 270,
-//           y: 240,
-//           type: "suburb",
-//         },
-//         {
-//           //costly commons
-//           x: 160,
-//           y: 210,
-//           type: "urban",
-//         },
-//         {
-//           //rural 1
-//           x: 10,
-//           y: 10,
-//           type: "rural",
-//         },
-//         {
-//           //rural 2
-//           x: 120,
-//           y: 10,
-//           type: "rural",
-//         },
-//         {
-//           //rural 3
-//           x: 200,
-//           y: 10,
-//           type: "rural",
-//         },
-//         {
-//           //rural 4
-//           x: 340,
-//           y: 10,
-//           type: "rural",
-//         },
-//         {
-//           //rural 5
-//           x: 10,
-//           y: 125,
-//           type: "rural",
-//         },
-//         {
-//           //rural 6
-//           x: 330,
-//           y: 170,
-//           type: "rural",
-//         },
-//         {
-//           //rural 7
-//           x: 10,
-//           y: 300,
-//           type: "rural",
-//         },
-//         {
-//           //rural 8
-//           x: 370,
-//           y: 220,
-//           type: "rural",
-//         },
-//         {
-//           //rural 9
-//           x: 210,
-//           y: 290,
-//           type: "rural",
-//         },
-//       ];
 
 const displaySensors = ref(false)
 
@@ -903,7 +148,7 @@ function applySolutions() {
 function applySolution(key: string) { //@ts-ignore
   let vars = solutionApplicationDict.value[key] ? solutions.value[key] : [0, 0, 0, "*"];
   console.info("hello", key, vars)
-  for (const d of initialSensorData) {//@ts-ignore
+  for (const d of getPoints()) {//@ts-ignore
     if (d.zone === "suburb" && d.type === vars[3] && d.value) { //@ts-ignore
       d.value = d.value - vars[1];
     } //@ts-ignore
@@ -928,7 +173,7 @@ function randNumber() {
   return Math.floor(Math.random() * 10);
 }
 function setupData() {
-  for (const d of initialSensorData) {
+  for (const d of getPoints()) {
     const randIncrease = Math.random() > 0.5;
     // const c = randIncrease ? randNumber() : randNumber() * -1;
     const c = 0;
@@ -941,11 +186,14 @@ function setupData() {
     if (d.zone === "rural") { //@ts-ignore
       d.value = regionalSeed.value[0] + c;
     }
+    if (d.zone === "water") { //@ts-ignore
+      d.value = 0
+    }
   }
 }
 
 function getAvg() { //@ts-ignore
-  return initialSensorData.reduce((a, b) => a + (b.value || 0), 0) / initialSensorData.length || 0
+  return getPoints().reduce((a, b) => a + (b.value || 0), 0) / getPoints().length || 0
 }
 
 function showSensors() {
@@ -957,7 +205,7 @@ function hideSensors() {
   removeSensors();
 }
 function drawSensors() {
-  for (const i of initialSensorData) {
+  for (const i of getPoints()) {
     const svg = d3.select('svg');
     svg
       .append("circle")
@@ -986,6 +234,13 @@ function redrawChart() {
   applySolutions();
   draw();
 }
+
+function getPoints() {
+  return dataFlag.value === "voronai"
+    ? voronaiData
+    : initialSensorData
+
+}
 function draw() {
   const width = 432;
   const height = 324;
@@ -1013,7 +268,7 @@ function draw() {
     .classed("svg-content-responsive", true)
     .attr("viewBox", "0 0 432 324")
 
-  console.info(colorRange, colors.value)
+  // console.info(colorRange, colors.value)
 
   const colorScale = d3
     .scaleSequential(d3.interpolateRgbBasis(colorRange))
@@ -1023,7 +278,10 @@ function draw() {
     let totalWeight = 0;
     let interpolatedValue = 0;
 
-    initialSensorData.forEach((d) => {
+
+    const points = getPoints()
+
+    points.forEach((d) => {
       const distance =
         Math.sqrt((x - d.x) ** p + (y - d.y) ** p) + 10 ** -15;
       const weight = 1 / distance;
@@ -1037,6 +295,9 @@ function draw() {
   for (let x = 0; x < width; x += gridSize.value) {
     for (let y = 0; y < height; y += gridSize.value) {
       const interpolated = interpolateValue(x, y);
+      const scale = colorScale(interpolated);
+      console.info(interpolated)
+
       svg
         .append("rect")
         .attr("x", x)
@@ -1045,7 +306,7 @@ function draw() {
         .attr("width", gridSize.value)
         .attr("height", gridSize.value)
         .style("opacity", 0.65)
-        .style("fill", colorScale(interpolated));
+        .style("fill", scale);
     }
   }
   if (displaySensors.value) {
@@ -1058,7 +319,6 @@ function draw() {
 <template>
   <div>
     <h1>Configuration</h1>
-    <p>This one's for the heat goblins who couldn't be with us today. Gone but not forgotten!</p>
     <div class="configBox">
       <div class="colors">
         <h2>Colors & Weights</h2>
@@ -1136,10 +396,16 @@ function draw() {
       <h1>Heatmap</h1>
       <button @click="redrawChart">redraw</button>
       <button @click="showSensors">show sensors</button><button @click="hideSensors">hide sensors</button>
+      <br>
+      <h2>presets</h2>
+      <button @click="applyGratefulDeadConfig">Grateful Dead</button>
+      <button @click="applyGratefulDeadVoronaiConfig">Grateful Dead + Voronai Points</button>
+      <button @click="applyJosephConradConfig">Joseph Conrad</button>
+      <hr>
       <!-- <span>Average: {{ getAvg() }} </span> -->
       <div class="containerBox">
         <div class="foo" ref="chart">
-          <img class="bgCity" src="../assets/bg-city-v2.png" />
+          <img class="bgCity" src="../assets/bg-city-v3.png" />
           <img class="bgCity top" src="../assets/ui-overlay.png" />
           <div class="svg-container"></div>
         </div>

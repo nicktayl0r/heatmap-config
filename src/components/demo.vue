@@ -147,7 +147,7 @@ function updateSolutionDict(key: string) {
 
   solutionApplicationDict.value = newDict;
 }
-function applySolutions() {
+function applySolutions() { //@ts-ignore
   myrng = seedrandom(seed.value);
   console.info("apply-solutions", solutionApplicationDict.value)
   for (let k of Object.keys(solutionApplicationDict.value)) { 
@@ -179,7 +179,7 @@ function applySolution(key: string) { //@ts-ignore
     } //@ts-ignore
     if (d.zone === "rural" && d.type === "*" && d.value) { //@ts-ignore
       d.value = d.value - (vars[0]/2);
-    }
+    } //@ts-ignore
     console.info(d.value)
   }
 }

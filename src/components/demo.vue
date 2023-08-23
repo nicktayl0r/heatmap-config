@@ -1,7 +1,8 @@
 <script setup lang="ts">
 //@ts-ignore
 import * as d3 from "d3";
-import { ref } from 'vue'
+import * as seedrandom from 'seedrandom';
+import { ref, onUpdated} from 'vue'
 import { initialSensorData, voronaiData } from '../data';
 interface SolutionApplicationDict {
   [key: string]: boolean
@@ -19,6 +20,7 @@ interface HydratedSensorDatum extends SensorDatum {
 
 type ColorData = [string, number]
 type PValue = 4 | 8 | 16 | 2 | 32;
+const seed = ref("")
 const chart = ref(null);
 const pValue = ref(8);
 const gridSize = ref(3);
@@ -40,6 +42,7 @@ const colors = ref([
 const domain = ref([256, 418]);
 
 const dataFlag = ref("")
+let myrng: any = null;
 
 function applyGratefulDeadConfig() {
   regionalSeed.value = [275, 380, 420];
@@ -89,6 +92,13 @@ function applyGratefulDeadVoronaiConfig() {
   redrawChart();
 }
 
+function getMeanSAT() {
+  const points = getPoints();
+  const len = points.length; //@ts-ignore
+  const temperatureSum = points.reduce((acc, curr) => {return acc + curr.value}, 0);
+  console.info("mean SAT", temperatureSum/len)
+}
+
 function applyJosephConradConfig() {
   regionalSeed.value = [230, 360, 420];
   domain.value = [256, 418];
@@ -136,19 +146,22 @@ function updateSolutionDict(key: string) {
   newDict[key] = !solutionApplicationDict.value[key];
 
   solutionApplicationDict.value = newDict;
-  console.log(key, solutionApplicationDict.value)
 }
 function applySolutions() {
-  for (let k of Object.keys(solutionApplicationDict.value)) { //@ts-ignore
-    if (solutionApplicationDict.value[k]) {
-      applySolution(k);
-    }
+  myrng = seedrandom(seed.value);
+  console.info("apply-solutions", solutionApplicationDict.value)
+  for (let k of Object.keys(solutionApplicationDict.value)) { 
+    applySolution(k);
   }
 }
 function applySolution(key: string) { //@ts-ignore
   let vars = solutionApplicationDict.value[key] ? solutions.value[key] : [0, 0, 0, "*"];
-  console.info("hello", key, vars)
-  for (const d of getPoints()) {//@ts-ignore
+  
+  for (const d of getPoints()) {
+    const r = randNumber(); //@ts-ignore
+    // const r = 0 //@ts-ignore
+    d.value = d.value - r
+    //@ts-ignore
     if (d.zone === "suburb" && d.type === vars[3] && d.value) { //@ts-ignore
       d.value = d.value - vars[1];
     } //@ts-ignore
@@ -167,10 +180,17 @@ function applySolution(key: string) { //@ts-ignore
     if (d.zone === "rural" && d.type === "*" && d.value) { //@ts-ignore
       d.value = d.value - (vars[0]/2);
     }
+    console.info(d.value)
   }
 }
 function randNumber() {
-  return Math.floor(Math.random() * 10);
+  let alpha = 0;
+  if(myrng !== null && seed.value !== "") {
+    alpha = Math.round(myrng() * 100)/10
+  }
+  
+  console.info(alpha, seed.value)
+  return alpha;
 }
 function setupData() {
   for (const d of getPoints()) {
@@ -232,6 +252,7 @@ function redrawChart() {
   s.remove();
   setupData();
   applySolutions();
+  getMeanSAT()
   draw();
 }
 
@@ -296,7 +317,6 @@ function draw() {
     for (let y = 0; y < height; y += gridSize.value) {
       const interpolated = interpolateValue(x, y);
       const scale = colorScale(interpolated);
-      console.info(interpolated)
 
       svg
         .append("rect")
@@ -321,6 +341,7 @@ function draw() {
     <h1>Configuration</h1>
     <div class="configBox">
       <div class="colors">
+        
         <h2>Colors & Weights</h2>
         <div v-for="(c, i) in colors" :key="i">
           <input type="color" v-model="c[0]">
@@ -395,14 +416,17 @@ function draw() {
     <div>
       <h1>Heatmap</h1>
       <button @click="redrawChart">redraw</button>
-      <button @click="showSensors">show sensors</button><button @click="hideSensors">hide sensors</button>
+      <button @click="showSensors">show sensors</button>
+      <button @click="hideSensors">hide sensors</button>
       <br>
       <h2>presets</h2>
       <button @click="applyGratefulDeadConfig">Grateful Dead</button>
       <button @click="applyGratefulDeadVoronaiConfig">Grateful Dead + Voronai Points</button>
       <button @click="applyJosephConradConfig">Joseph Conrad</button>
       <hr>
-      <!-- <span>Average: {{ getAvg() }} </span> -->
+      <h2>Seed</h2>
+      <input type="text" v-model="seed">
+      <span>Average: {{ getAvg() }} </span>
       <div class="containerBox">
         <div class="foo" ref="chart">
           <img class="bgCity" src="../assets/bg-city-v3.png" />

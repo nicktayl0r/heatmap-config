@@ -1,7 +1,8 @@
 <script setup lang="ts">
 //@ts-ignore
 import * as d3 from "d3";
-import * as seedrandom from 'seedrandom';
+declare var require: any
+var seedrandom = require('seedrandom');
 import { ref, onUpdated} from 'vue'
 import { initialSensorData, voronaiData } from '../data';
 interface SolutionApplicationDict {

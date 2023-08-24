@@ -2,7 +2,7 @@
 //@ts-ignore
 import * as d3 from "d3";
 declare var require: any
-var seedrandom = require('seedrandom');
+import seedrandom from 'seedrandom';
 import { ref, onUpdated} from 'vue'
 import { initialSensorData, voronaiData } from '../data';
 interface SolutionApplicationDict {

@@ -79,3 +79,9 @@ body {
   left: 0;
   /* opacity: 0.3; */
 }
+
+
+
+svg text {
+  font-size: .5vh;
+}

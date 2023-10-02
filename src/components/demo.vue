@@ -226,7 +226,8 @@ function hideSensors() {
   removeSensors();
 }
 function drawSensors() {
-  for (const i of getPoints()) {
+  const sensors = getPoints();
+  for (const i of sensors) {
     const svg = d3.select('svg');
     svg
       .append("circle")
@@ -235,10 +236,16 @@ function drawSensors() {
       .attr('r', '2px')
       .style("stroke", 'white')
       .style('fill', 'red');
+    svg
+      .append("text")
+      .attr('x', i['x'])
+      .attr('y', i['y'])
+      .text(sensors.indexOf(i));
   }
 }
 function removeSensors() {
   d3.selectAll("circle").remove();
+  d3.selectAll("text").remove();
 }
 function addColor() {
   colors.value.push(["#ff0000", 1]);
@@ -542,6 +549,7 @@ function draw() {
 .top {
   z-index: 2;
   /* display: none; */
+  pointer-events: none;
 }
 
 table {
